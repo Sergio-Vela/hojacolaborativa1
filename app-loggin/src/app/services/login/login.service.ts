@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { Login } from 'src/app/interfaces/loginDto';
+import { Login } from '../../interfaces/loginDto';
 
 @Injectable({
   providedIn: 'root'
