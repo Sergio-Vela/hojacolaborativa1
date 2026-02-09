@@ -1,30 +1,109 @@
-<div class="login-container">
-  <h2>Iniciar Sesión</h2>
+import { NgModule, Component } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
 
-  <form (ngSubmit)="login()" #loginForm="ngForm">
-    
-    <div class="form-group">
-      <label>Usuario</label>
-      <input
-        type="text"
-        name="username"
-        [(ngModel)]="username"
-        required
-        placeholder="Ingrese usuario"
-      />
-    </div>
+import { ReactiveFormsModule, FormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-    <div class="form-group">
-      <label>Contraseña</label>
-      <input
-        type="password"
-        name="password"
-        [(ngModel)]="password"
-        required
-        placeholder="Ingrese contraseña"
-      />
-    </div>
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 
-    <button type="submit">Login</button>
-  </form>
-</div>
+
+@Component({
+  selector: 'app-login',
+  template: `
+  <div class="login-container">
+    <mat-card class="login-card">
+
+      <h2>Iniciar Sesión</h2>
+
+      <form [formGroup]="loginForm" (ngSubmit)="login()">
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Usuario</mat-label>
+          <input matInput formControlName="username" placeholder="Ingrese usuario">
+          <mat-error *ngIf="loginForm.get('username')?.invalid">
+            Usuario requerido
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Contraseña</mat-label>
+          <input matInput type="password" formControlName="password" placeholder="Ingrese contraseña">
+          <mat-error *ngIf="loginForm.get('password')?.invalid">
+            Contraseña requerida
+          </mat-error>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary"
+                class="full-width"
+                type="submit"
+                [disabled]="loginForm.invalid">
+          Login
+        </button>
+
+      </form>
+
+    </mat-card>
+  </div>
+  `,
+  styles: [`
+    .login-container {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #3f51b5, #5c6bc0);
+    }
+
+    .login-card {
+      width: 350px;
+      padding: 30px;
+      border-radius: 12px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .full-width {
+      width: 100%;
+      margin-bottom: 15px;
+    }
+  `]
+})
+export class LoginComponent {
+
+  loginForm: FormGroup;
+
+  constructor(private fb: FormBuilder) {
+    this.loginForm = this.fb.group({
+      username: ['', Validators.required],
+      password: ['', Validators.required]
+    });
+  }
+
+  login() {
+    if (this.loginForm.valid) {
+      console.log(this.loginForm.value);
+    }
+  }
+}
+
+
+@NgModule({
+  declarations: [LoginComponent],
+  imports: [
+    BrowserModule,
+    ReactiveFormsModule,
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatCardModule
+  ],
+  bootstrap: [LoginComponent]
+})
+export class AppModule {}
+
