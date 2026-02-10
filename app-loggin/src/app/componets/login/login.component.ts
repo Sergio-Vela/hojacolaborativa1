@@ -1,11 +1,13 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Login } from '../../interfaces/loginDto';
 import { LoginService } from '../../services/login/login.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
+  imports: [FormsModule],
 })
 export class LoginComponent {
   
